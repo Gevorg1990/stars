@@ -86,7 +86,7 @@ app.post('/global-rating', (req, res) => {
     }
 });
 
-const PORT = 'https://psychic-space-computing-machine-vwqwxgw4xqw3xxw5-3000.app.github.dev/';
+const PORT = 3000;
 app.listen(PORT, () => {
     console.log(`Server is running on http://localhost:3000/:${PORT}`);
 });

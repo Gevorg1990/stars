@@ -76,7 +76,6 @@ body {
                       @click="setRating(star)">
                     ★
                 </span>
-
             </div>
             <p>Total Comments: {{ commentCount }}</p>
             <p>Average Rating: {{ averageRating }}</p>
@@ -113,7 +112,7 @@ body {
             methods: {
                 async fetchComments() {
                     try {
-                        const response = await fetch('https://psychic-space-computing-machine-vwqwxgw4xqw3xxw5-3000.app.github.dev/comments');
+                        const response = await fetch('https://upgraded-system-vwqwxgw4xpgfxx55-3000.app.github.dev/comments');
                         if (!response.ok) throw new Error('Failed to fetch comments');
                         const data = await response.json();
                         this.comments = data.comments;
@@ -130,7 +129,7 @@ body {
                 async addComment() {
                     if (this.newComment.trim()) {
                         try {
-                            const response = await fetch('https://psychic-space-computing-machine-vwqwxgw4xqw3xxw5-3000.app.github.dev/comments', {
+                            const response = await fetch('https://upgraded-system-vwqwxgw4xpgfxx55-3000.app.github.dev/comments', {
                                 method: 'POST',
                                 headers: {
                                     'Content-Type': 'application/json'
@@ -150,7 +149,7 @@ body {
                 },
                 async deleteComment(index) {
                     try {
-                        const response = await fetch(`https://psychic-space-computing-machine-vwqwxgw4xqw3xxw5-3000.app.github.dev/comments/${index}`, {
+                        const response = await fetch(`https://upgraded-system-vwqwxgw4xpgfxx55-3000.app.github.dev/comments/${index}`, {
                             method: 'DELETE'
                         });
                         if (!response.ok) throw new Error('Failed to delete comment');
@@ -161,7 +160,7 @@ body {
                 },
                 async saveGlobalRating() {
                     try {
-                        const response = await fetch('https://psychic-space-computing-machine-vwqwxgw4xqw3xxw5-3000.app.github.dev/global-rating', {
+                        const response = await fetch('https://upgraded-system-vwqwxgw4xpgfxx55-3000.app.github.dev/global-rating', {
                             method: 'POST',
                             headers: {
                                 'Content-Type': 'application/json'
