@@ -30,16 +30,6 @@ comments.forEach(comment => {
     }
 });
 
-// Middleware to authenticate user (simplified)
-function authenticate(req, res, next) {
-    const userId = req.header('x-user-id'); // Assume user ID is passed in header
-    if (!userId) {
-        return res.status(401).json({ message: 'Unauthorized' });
-    }
-    req.userId = userId; // Attach userId to request object
-    next();
-}
-
 // Get all comments, global rating, and average rating
 app.get('/comments', (req, res) => {
     res.json({
@@ -51,10 +41,10 @@ app.get('/comments', (req, res) => {
 });
 
 // Add a new comment
-app.post('/comments', authenticate, (req, res) => {
+app.post('/comments', (req, res) => {
     const { text, rating } = req.body;
     if (text && typeof rating === 'number' && rating >= 1 && rating <= 5) {
-        comments.push({ text, rating, userId: req.userId });
+        comments.push({ text, rating });
 
         // Update rating counts
         if (ratingCounts[rating] !== undefined) {
@@ -67,30 +57,25 @@ app.post('/comments', authenticate, (req, res) => {
     }
 });
 
-// Delete a comment by index, only if the user owns it
-app.delete('/comments/:index', authenticate, (req, res) => {
+// Delete a comment by index
+app.delete('/comments/:index', (req, res) => {
     const index = parseInt(req.params.index, 10);
     if (!isNaN(index) && index >= 0 && index < comments.length) {
-        const comment = comments[index];
-        if (comment.userId === req.userId) {
-            comments.splice(index, 1);
+        const removedComment = comments.splice(index, 1)[0];
 
-            // Update rating counts
-            if (ratingCounts[comment.rating] !== undefined) {
-                ratingCounts[comment.rating]--;
-            }
-
-            res.status(200).json({ message: 'Comment deleted!' });
-        } else {
-            res.status(403).json({ message: 'Forbidden: You cannot delete this comment' });
+        // Update rating counts
+        if (removedComment && ratingCounts[removedComment.rating] !== undefined) {
+            ratingCounts[removedComment.rating]--;
         }
+
+        res.status(200).json({ message: 'Comment deleted!' });
     } else {
         res.status(404).json({ message: 'Comment not found' });
     }
 });
 
 // Set global rating
-app.post('/global-rating', authenticate, (req, res) => {
+app.post('/global-rating', (req, res) => {
     const { rating } = req.body;
     if (typeof rating === 'number' && rating >= 1 && rating <= 5) {
         globalRating = rating;
