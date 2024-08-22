@@ -109,7 +109,7 @@
         methods: {
             async fetchComments() {
                 try {
-                    const response = await fetch('https://glorious-engine-46w6xg6xj74hjppw-3000.app.github.dev/comments');
+                    const response = await fetch('https://jubilant-bassoon-p9p9xg9vx5437475-3000.app.github.dev/comments');
                     if (!response.ok) throw new Error('Failed to fetch comments');
                     const data = await response.json();
                     this.comments = data.comments;
@@ -125,7 +125,7 @@
             async addComment() {
                 if (this.newComment.trim()) {
                     try {
-                        const response = await fetch('https://glorious-engine-46w6xg6xj74hjppw-3000.app.github.dev/comments', {
+                        const response = await fetch('https://jubilant-bassoon-p9p9xg9vx5437475-3000.app.github.dev/comments', {
                             method: 'POST',
                             headers: {
                                 'Content-Type': 'application/json',
@@ -146,7 +146,7 @@
             },
             async deleteComment(index) {
                 try {
-                    const response = await fetch(`https://glorious-engine-46w6xg6xj74hjppw-3000.app.github.dev/comments/${index}`, {
+                    const response = await fetch(`https://jubilant-bassoon-p9p9xg9vx5437475-3000.app.github.dev/comments/${index}`, {
                         method: 'DELETE',
                         headers: {
                             'x-user-id': this.userId // Send user ID with delete request
@@ -160,7 +160,7 @@
             },
             async saveGlobalRating() {
                 try {
-                    const response = await fetch('https://glorious-engine-46w6xg6xj74hjppw-3000.app.github.dev/global-rating', {
+                    const response = await fetch('https://jubilant-bassoon-p9p9xg9vx5437475-3000.app.github.dev/global-rating', {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
