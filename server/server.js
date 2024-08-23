@@ -5,10 +5,12 @@ const { v4: uuidv4 } = require('uuid');
 
 const app = express();
 app.use(bodyParser.json());
+
 // Uncomment and adjust the origin to match your deployment
-// app.use(cors({
-//     origin: 'https://gevorg1990.github.io',
-// }));
+app.use(cors({
+    // origin: 'https://gevorg1990.github.io', // Replace with your production URL
+    origin: '*', // Allow all origins for local development
+}));
 
 let comments = [];
 let globalRating = 5;
@@ -24,7 +26,7 @@ function calculateAverageRating() {
         totalRatings += count;
     }
 
-    return totalRatings > 0 ? (totalRating / totalRatings).toFixed(1) : 0;
+    return totalRatings > 0 ? (totalRating / totalRatings).toFixed(1) : '0.0';
 }
 
 // Initialize rating counts based on current comments
@@ -46,9 +48,9 @@ app.get('/comments', (req, res) => {
 
 // Add a new comment
 app.post('/comments', (req, res) => {
-    const { text, rating, userId } = req.body;  // Include userId
+    const { text, rating, userId } = req.body;
     if (text && typeof rating === 'number' && rating >= 1 && rating <= 5 && userId) {
-        comments.push({ text, rating, userId });  // Save userId with the comment
+        comments.push({ text, rating, userId });
 
         // Update rating counts
         if (ratingCounts[rating] !== undefined) {
@@ -64,16 +66,20 @@ app.post('/comments', (req, res) => {
 // Delete a comment by index
 app.delete('/comments/:index', (req, res) => {
     const index = parseInt(req.params.index, 10);
-    const { userId } = req.body;  // Get userId from the request body
+    const { userId } = req.body;
 
     if (!isNaN(index) && index >= 0 && index < comments.length) {
         const comment = comments[index];
-        if (comment.userId === userId) {  // Check if the current user is the author
+        if (comment.userId === userId) {
             const removedComment = comments.splice(index, 1)[0];
 
             // Update rating counts
             if (removedComment && ratingCounts[removedComment.rating] !== undefined) {
                 ratingCounts[removedComment.rating]--;
+                // Ensure rating count doesn't go negative
+                if (ratingCounts[removedComment.rating] < 0) {
+                    ratingCounts[removedComment.rating] = 0;
+                }
             }
 
             res.status(200).json({ message: 'Comment deleted!' });
