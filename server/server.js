@@ -1,9 +1,11 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
+const { v4: uuidv4 } = require('uuid');
 
 const app = express();
 app.use(bodyParser.json());
+// Uncomment and adjust the origin to match your deployment
 // app.use(cors({
 //     origin: 'https://gevorg1990.github.io',
 // }));
@@ -44,9 +46,9 @@ app.get('/comments', (req, res) => {
 
 // Add a new comment
 app.post('/comments', (req, res) => {
-    const { text, rating } = req.body;
-    if (text && typeof rating === 'number' && rating >= 1 && rating <= 5) {
-        comments.push({ text, rating });
+    const { text, rating, userId } = req.body;  // Include userId
+    if (text && typeof rating === 'number' && rating >= 1 && rating <= 5 && userId) {
+        comments.push({ text, rating, userId });  // Save userId with the comment
 
         // Update rating counts
         if (ratingCounts[rating] !== undefined) {
@@ -62,15 +64,22 @@ app.post('/comments', (req, res) => {
 // Delete a comment by index
 app.delete('/comments/:index', (req, res) => {
     const index = parseInt(req.params.index, 10);
+    const { userId } = req.body;  // Get userId from the request body
+
     if (!isNaN(index) && index >= 0 && index < comments.length) {
-        const removedComment = comments.splice(index, 1)[0];
+        const comment = comments[index];
+        if (comment.userId === userId) {  // Check if the current user is the author
+            const removedComment = comments.splice(index, 1)[0];
 
-        // Update rating counts
-        if (removedComment && ratingCounts[removedComment.rating] !== undefined) {
-            ratingCounts[removedComment.rating]--;
+            // Update rating counts
+            if (removedComment && ratingCounts[removedComment.rating] !== undefined) {
+                ratingCounts[removedComment.rating]--;
+            }
+
+            res.status(200).json({ message: 'Comment deleted!' });
+        } else {
+            res.status(403).json({ message: 'Unauthorized to delete this comment' });
         }
-
-        res.status(200).json({ message: 'Comment deleted!' });
     } else {
         res.status(404).json({ message: 'Comment not found' });
     }
