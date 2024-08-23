@@ -19,14 +19,14 @@
     <div>
         <h2>Global Rating:</h2>
         <div class="stars">
-            <span v-for="star in 5" :key="star"
-                  class="star"
-                  :class="{ filled: star <= tempRating, empty: star > tempRating }"
-                  @mouseover="hoverRating(star)"
-                  @mouseleave="resetRating"
-                  @click="setRating(star)">
-                ★
-            </span>
+                <span v-for="star in 5" :key="star"
+                      class="star"
+                      :class="{ filled: star <= tempRating, empty: star > tempRating }"
+                      @mouseover="hoverRating(star)"
+                      @mouseleave="resetRating"
+                      @click="setRating(star)">
+                    ★
+                </span>
         </div>
         <p>Total Comments: {{ commentCount }}</p>
         <p>Average Rating: {{ averageRating }}</p>
@@ -50,14 +50,6 @@
 </div>
 
 <script>
-    // Function to generate a unique user ID
-    function generateUniqueId() {
-        return 'xxxxxxxxyxxx4xxyxxyxxyxxyxxxxxxx'.replace(/[xy]/g, function(c) {
-            const r = Math.random() * 16 | 0, v = c === 'x' ? r : (r & 0x3 | 0x8);
-            return v.toString(16);
-        });
-    }
-
     const app = Vue.createApp({
         data() {
             return {
@@ -67,7 +59,7 @@
                 comments: [],
                 commentCount: 0,
                 averageRating: 0, // Average rating
-                currentUserId: generateUniqueId() // Generate a unique user ID
+                currentUserId: 'user123' // Assume this is the current user's ID
             };
         },
         methods: {
@@ -120,7 +112,7 @@
                         headers: {
                             'Content-Type': 'application/json'
                         },
-                        body: JSON.stringify({ userId: this.currentUserId }) // Include userId in delete request
+                        body: JSON.stringify({ userId: this.currentUserId }) // Include userId in the request body
                     });
                     if (!response.ok) throw new Error('Failed to delete comment');
                     await this.fetchComments();
