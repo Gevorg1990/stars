@@ -21,7 +21,7 @@
         <h2>Global Rating:</h2>
         <div class="stars">
             <span v-for="star in 5" :key="star"
-                  class="star"
+                  class="star filled"
                   :class="{ filled: star <= tempRating, empty: star > tempRating }"
                   @mouseover="hoverRating(star)"
                   @mouseleave="resetRating"
