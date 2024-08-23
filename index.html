@@ -7,7 +7,6 @@
     <link rel="stylesheet" href="main.css">
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/uuid@8.3.2/dist/umd/uuid.min.js"></script> <!-- Include UUID library -->
-    <script src="https://cdn.jsdelivr.net/npm/uuid@8.3.2/dist/umd/uuid.min.js"></script>
 
 </head>
 <body>
@@ -40,8 +39,8 @@
             {{ comment.text }}
             <!-- Show delete button only if the comment belongs to the current user -->
 
-            <p>{{comment.userId}}</p>
-            <p>{{currentUserId}}</p>
+            <p>COMMENT USER ID {{comment.userId}}</p>
+            <p>CURRENTUSERID {{currentUserId}}</p>
             <button v-if="comment.userId === currentUserId" @click="deleteComment(index)">Delete</button>
         </div>
     </div>
