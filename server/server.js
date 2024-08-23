@@ -4,7 +4,9 @@ const cors = require('cors');
 
 const app = express();
 app.use(bodyParser.json());
-app.use(cors());
+// app.use(cors({
+//     origin: 'https://gevorg1990.github.io',
+// }));
 
 let comments = [];
 let globalRating = 5;

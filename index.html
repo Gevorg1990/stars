@@ -64,7 +64,7 @@
             methods: {
                 async fetchComments() {
                     try {
-                        const response = await fetch('https://friendly-space-lamp-55x5w45wv49h79q7-3000.app.github.dev/comments');
+                        const response = await fetch('https://ubiquitous-space-giggle-vwqwxgwxvq7hpq7j-3000.app.github.dev/comments');
                         if (!response.ok) throw new Error('Failed to fetch comments');
                         const data = await response.json();
                         this.comments = data.comments;
@@ -81,7 +81,7 @@
                 async addComment() {
                     if (this.newComment.trim()) {
                         try {
-                            const response = await fetch('https://friendly-space-lamp-55x5w45wv49h79q7-3000.app.github.dev/comments', {
+                            const response = await fetch('https://ubiquitous-space-giggle-vwqwxgwxvq7hpq7j-3000.app.github.dev/comments', {
                                 method: 'POST',
                                 headers: {
                                     'Content-Type': 'application/json'
@@ -101,7 +101,7 @@
                 },
                 async deleteComment(index) {
                     try {
-                        const response = await fetch(`https://friendly-space-lamp-55x5w45wv49h79q7-3000.app.github.dev/comments/${index}`, {
+                        const response = await fetch(`https://ubiquitous-space-giggle-vwqwxgwxvq7hpq7j-3000.app.github.dev/comments/${index}`, {
                             method: 'DELETE'
                         });
                         if (!response.ok) throw new Error('Failed to delete comment');
@@ -112,7 +112,7 @@
                 },
                 async saveGlobalRating() {
                     try {
-                        const response = await fetch('https://friendly-space-lamp-55x5w45wv49h79q7-3000.app.github.dev/global-rating', {
+                        const response = await fetch('https://ubiquitous-space-giggle-vwqwxgwxvq7hpq7j-3000.app.github.dev/global-rating', {
                             method: 'POST',
                             headers: {
                                 'Content-Type': 'application/json'
