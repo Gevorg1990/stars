@@ -21,7 +21,7 @@
         <h2>Global Rating:</h2>
         <div class="stars">
             <span v-for="star in 5" :key="star"
-                  class="star filled"
+                  class="star"
                   :class="{ filled: star <= tempRating, empty: star > tempRating }"
                   @mouseover="hoverRating(star)"
                   @mouseleave="resetRating"
@@ -76,7 +76,7 @@
             return {
                 newComment: '',
                 globalRating: 3, // Default rating value
-                tempRating: 3, // Default temp rating value
+                tempRating: 5, // Default temp rating value
                 comments: [],
                 commentCount: 0,
                 averageRating: 0, // Average rating
@@ -162,7 +162,7 @@
                 this.tempRating = star;
             },
             resetRating() {
-                this.tempRating = this.globalRating;
+                this.tempRating = 5;
             }
         },
         mounted() {
