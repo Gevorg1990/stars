@@ -40,13 +40,13 @@
             <!-- Show delete button only if the comment belongs to the current user -->
 
             <p>COMMENT USER ID {{comment.userId}} ??????????????</p>
-            <p>CURRENTUSERID {{userId}} ----------------</p>
+            <p>CURRENTUSERID {{frontUserId}} ----------------</p>
 
             <pre>
                 {{comment}}
             </pre>
 
-            <button v-if="comment.userId === userId" @click="deleteComment(index)">Delete</button>
+            <button v-if="comment.userId === frontUserId" @click="deleteComment(index)">Delete</button>
         </div>
     </div>
 
@@ -71,7 +71,7 @@
                 comments: [],
                 commentCount: 0,
                 averageRating: 0, // Average rating
-                userId: 'user123' // Generate a unique user ID
+                frontUserId: uuid.v4() // Generate a unique user ID
             };
         },
         methods: {
@@ -101,7 +101,7 @@
                             body: JSON.stringify({
                                 text: this.newComment.trim(),
                                 rating: this.globalRating,
-                                userId: this.userId // Include the current user's ID
+                                userId: this.frontUserId // Include the current user's ID
                             })
                         });
                         if (!response.ok) throw new Error('Failed to add comment');
@@ -114,9 +114,9 @@
             },
             async deleteComment(index) {
                 const comment = this.comments[index];
-                console.log('Current user ID:', this.userId); // Log current user ID
+                console.log('Current user ID:', this.frontUserId); // Log current user ID
                 console.log('Comment user ID:', comment.userId); // Log comment user ID
-                if (comment.userId !== this.userId) {
+                if (comment.userId !== this.frontUserId) {
                     console.error('You are not authorized to delete this comment');
                     return;
                 }
