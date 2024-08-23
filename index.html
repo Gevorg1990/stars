@@ -57,7 +57,7 @@
     const { v4: uuidv4 } = require('uuid');
 
     function generateUniqueId() {
-        return uuidv4(); // Generates a version 4 UUID
+        return uuid.v4(); // Generates a version 4 UUID using the imported uuid library
     }
 
     const app = Vue.createApp({
