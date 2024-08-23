@@ -101,7 +101,7 @@ app.delete('/comments/:id', (req, res) => {
 
 // Set global rating
 app.post('/global-rating', (req, res) => {
-    const { rating } = req.body;
+    const { rating } = 5;
     if (typeof rating === 'number' && rating >= 1 && rating <= 5) {
         globalRating = rating;
 
