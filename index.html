@@ -35,6 +35,9 @@
     <div>
         <div v-for="(comment, index) in comments" :key="index">
             {{ comment.text }}
+            <!-- Debug output -->
+            <p>Comment User ID: {{ comment.userId }}</p>
+            <p>Current User ID: {{ currentUserId }}</p>
             <!-- Show delete button only if the comment belongs to the current user -->
             <button v-if="comment.userId === currentUserId" @click="deleteComment(index)">Delete</button>
         </div>
