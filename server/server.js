@@ -51,6 +51,7 @@ app.post('/comments', (req, res) => {
     const { text, rating, userId } = req.body;
     if (text && typeof rating === 'number' && rating >= 1 && rating <= 5 && userId) {
         const newComment = { text, rating, userId, id: uuidv4() };
+        console.log(newComment)
         comments.push(newComment);
 
         // Update rating counts
