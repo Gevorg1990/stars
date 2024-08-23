@@ -54,9 +54,10 @@
 </div>
 
 <script>
-    // Function to generate a unique user ID
+    import { v4 as uuidv4 } from 'uuid';
+
     function generateUniqueId() {
-        return uuid.v4(); // Generates a version 4 UUID using the imported uuid library
+        return uuidv4(); // Generates a version 4 UUID
     }
 
     const app = Vue.createApp({
