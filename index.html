@@ -7,6 +7,8 @@
     <link rel="stylesheet" href="main.css">
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/uuid@8.3.2/dist/umd/uuid.min.js"></script> <!-- Include UUID library -->
+    <script src="https://cdn.jsdelivr.net/npm/uuid@8.3.2/dist/umd/uuid.min.js"></script>
+
 </head>
 <body>
 <div id="app">
@@ -54,11 +56,7 @@
 </div>
 
 <script>
-    const { v4: uuidv4 } = require('uuid');
 
-    function generateUniqueId() {
-        return uuid.v4(); // Generates a version 4 UUID using the imported uuid library
-    }
 
     const app = Vue.createApp({
         data() {
@@ -69,7 +67,7 @@
                 comments: [],
                 commentCount: 0,
                 averageRating: 0, // Average rating
-                currentUserId: generateUniqueId() // Generate a unique user ID
+                currentUserId: uuid.v4() // Generate a unique user ID
             };
         },
         methods: {
