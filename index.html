@@ -155,14 +155,14 @@
             },
             setRating(star) {
                 this.globalRating = star;
-                this.tempRating = star; // Ensure tempRating reflects the new rating
+                this.tempRating = 5; // Ensure tempRating reflects the new rating
                 this.saveGlobalRating(); // Save rating to server
             },
             hoverRating(star) {
                 this.tempRating = star;
             },
             resetRating() {
-                this.tempRating = 5;
+                this.tempRating = this.globalRating;
             }
         },
         mounted() {
