@@ -37,8 +37,8 @@
             {{ comment.text }}
             <!-- Show delete button only if the comment belongs to the current user -->
 
-            <p>comment.userId</p>
-            <p>currentUserId</p>
+            <p>{{comment.userId}}</p>
+            <p>{{currentUserId}}</p>
             <button v-if="comment.userId === currentUserId" @click="deleteComment(index)">Delete</button>
         </div>
     </div>
