@@ -3,6 +3,9 @@
     --star-color: #fff;
     --star-background: #fc0;
 }
+[v-cloak] {
+    display: none;
+}
 
 .star {
     transition: all 0.3s ease;
