@@ -19,14 +19,14 @@
     <div>
         <h2>Global Rating:</h2>
         <div class="stars">
-                <span v-for="star in 5" :key="star"
-                      class="star"
-                      :class="{ filled: star <= tempRating, empty: star > tempRating }"
-                      @mouseover="hoverRating(star)"
-                      @mouseleave="resetRating"
-                      @click="setRating(star)">
-                    ★
-                </span>
+            <span v-for="star in 5" :key="star"
+                  class="star"
+                  :class="{ filled: star <= tempRating, empty: star > tempRating }"
+                  @mouseover="hoverRating(star)"
+                  @mouseleave="resetRating"
+                  @click="setRating(star)">
+                ★
+            </span>
         </div>
         <p>Total Comments: {{ commentCount }}</p>
         <p>Average Rating: {{ averageRating }}</p>
@@ -35,9 +35,6 @@
     <div>
         <div v-for="(comment, index) in comments" :key="index">
             {{ comment.text }}
-            <!-- Debug output -->
-            <p>Comment User ID: {{ comment.userId }}</p>
-            <p>Current User ID: {{ currentUserId }}</p>
             <!-- Show delete button only if the comment belongs to the current user -->
             <button v-if="comment.userId === currentUserId" @click="deleteComment(index)">Delete</button>
         </div>
@@ -53,6 +50,14 @@
 </div>
 
 <script>
+    // Function to generate a unique user ID
+    function generateUniqueId() {
+        return 'xxxxxxxxyxxx4xxyxxyxxyxxyxxxxxxx'.replace(/[xy]/g, function(c) {
+            const r = Math.random() * 16 | 0, v = c === 'x' ? r : (r & 0x3 | 0x8);
+            return v.toString(16);
+        });
+    }
+
     const app = Vue.createApp({
         data() {
             return {
@@ -62,7 +67,7 @@
                 comments: [],
                 commentCount: 0,
                 averageRating: 0, // Average rating
-                currentUserId: 'user123' // Assume this is the current user's ID
+                currentUserId: generateUniqueId() // Generate a unique user ID
             };
         },
         methods: {
@@ -115,7 +120,7 @@
                         headers: {
                             'Content-Type': 'application/json'
                         },
-                        body: JSON.stringify({ userId: this.currentUserId }) // Include userId in the request body
+                        body: JSON.stringify({ userId: this.currentUserId }) // Include userId in delete request
                     });
                     if (!response.ok) throw new Error('Failed to delete comment');
                     await this.fetchComments();
