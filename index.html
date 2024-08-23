@@ -21,7 +21,7 @@
         <h2>Global Rating:</h2>
         <div class="stars">
             <span v-for="star in 5" :key="star"
-                  class="star filled"
+                  class="star"
                   :class="{ filled: star <= tempRating, empty: star > tempRating }"
                   @mouseover="hoverRating(star)"
                   @mouseleave="resetRating"
@@ -75,8 +75,8 @@
         data() {
             return {
                 newComment: '',
-                globalRating: 5,
-                tempRating: 5,
+                globalRating: 3, // Default rating value
+                tempRating: 3, // Default temp rating value
                 comments: [],
                 commentCount: 0,
                 averageRating: 0, // Average rating
@@ -92,7 +92,7 @@
                     console.log('Fetched comments:', data); // Log the comments to check if userId is present
                     this.comments = data.comments;
                     this.globalRating = data.globalRating || 1;
-                    this.tempRating = this.globalRating;
+                    this.tempRating = this.globalRating; // Sync tempRating with globalRating
                     this.commentCount = data.comments.length;
                     this.averageRating = data.averageRating || 0; // Update averageRating
                 } catch (error) {
@@ -155,6 +155,7 @@
             },
             setRating(star) {
                 this.globalRating = star;
+                this.tempRating = star; // Ensure tempRating reflects the new rating
                 this.saveGlobalRating(); // Save rating to server
             },
             hoverRating(star) {
