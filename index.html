@@ -54,6 +54,23 @@
 </div>
 
 <script>
+    // Helper functions for cookie management
+    function getCookie(name) {
+        const value = `; ${document.cookie}`;
+        const parts = value.split(`; ${name}=`);
+        if (parts.length === 2) return parts.pop().split(';').shift();
+    }
+
+    function setCookie(name, value, days) {
+        let expires = "";
+        if (days) {
+            const date = new Date();
+            date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+            expires = `expires=${date.toUTCString()};`;
+        }
+        document.cookie = `${name}=${value}; ${expires}path=/`;
+    }
+
     const app = Vue.createApp({
         data() {
             return {
@@ -63,7 +80,7 @@
                 comments: [],
                 commentCount: 0,
                 averageRating: 0, // Average rating
-                frontUserId: uuid.v4() // Generate a unique user ID
+                frontUserId: getCookie('frontUserId') || uuid.v4() // Get user ID from cookies or generate new
             };
         },
         methods: {
@@ -148,6 +165,10 @@
             }
         },
         mounted() {
+            // Save frontUserId to cookies if not already set
+            if (!getCookie('frontUserId')) {
+                setCookie('frontUserId', this.frontUserId, 365); // Cookie expires in 365 days
+            }
             this.fetchComments();
         }
     });
