@@ -41,6 +41,11 @@
 
             <p>COMMENT USER ID {{comment.userId}}</p>
             <p>CURRENTUSERID {{currentUserId}}</p>
+
+            <pre>
+                {{comment}}
+            </pre>
+
             <button v-if="comment.userId === currentUserId" @click="deleteComment(index)">Delete</button>
         </div>
     </div>
