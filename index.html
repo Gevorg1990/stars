@@ -72,7 +72,7 @@
                     const response = await fetch('https://ubiquitous-space-giggle-vwqwxgwxvq7hpq7j-3000.app.github.dev/comments'); // Adjust URL for local development
                     if (!response.ok) throw new Error('Failed to fetch comments');
                     const data = await response.json();
-                    console.log('Fetched comments:', data.comments); // Log the comments to check if userId is present
+                    console.log('Fetched comments:', data); // Log the comments to check if userId is present
                     this.comments = data.comments;
                     this.globalRating = data.globalRating || 1;
                     this.tempRating = this.globalRating;
