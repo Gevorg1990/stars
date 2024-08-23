@@ -36,10 +36,6 @@
     <div>
         <div v-for="comment in comments" :key="comment.id">
             {{ comment.text }}
-            <!-- Show delete button only if the comment belongs to the current user -->
-            <p>COMMENT USER ID: {{ comment.userId }}</p>
-            <p>CURRENT USER ID: {{ frontUserId }}</p>
-            <pre>{{ comment }}</pre>
             <button v-if="comment.userId === frontUserId" @click="deleteComment(comment.id)">Delete</button>
         </div>
     </div>
@@ -49,7 +45,7 @@
             :style="{ '--rating': averageRating }"
             aria-label="Rating of this product is 2.3 out of 5."
     >
-        <!-- Star icons or other content here -->
+
     </div>
 </div>
 
@@ -168,7 +164,7 @@
         mounted() {
             // Save frontUserId to cookies if not already set
             if (!getCookie('frontUserId')) {
-                setCookie('frontUserId', this.frontUserId, 365); // Cookie expires in 365 days
+                setCookie('frontUserId', this.frontUserId, 365);
             }
             this.fetchComments();
         }
