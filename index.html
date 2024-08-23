@@ -75,7 +75,7 @@
         data() {
             return {
                 newComment: '',
-                globalRating: 3, // Default rating value
+                globalRating: 5, // Default rating value
                 tempRating: 5, // Default temp rating value
                 comments: [],
                 commentCount: 0,
@@ -92,7 +92,7 @@
                     console.log('Fetched comments:', data); // Log the comments to check if userId is present
                     this.comments = data.comments;
                     this.globalRating = data.globalRating || 1;
-                    this.tempRating = 5; // Sync tempRating with globalRating
+                    this.tempRating = this.globalRating; // Sync tempRating with globalRating
                     this.commentCount = data.comments.length;
                     this.averageRating = data.averageRating || 0; // Update averageRating
                 } catch (error) {
