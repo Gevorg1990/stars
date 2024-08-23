@@ -1,0 +1,48 @@
+:root {
+    --star-size: 40px;
+    --star-color: #fff;
+    --star-background: #fc0;
+}
+
+.star {
+    transition: all 0.3s ease;
+}
+
+.Stars {
+    --percent: calc(var(--rating) / 5 * 100%);
+    background: #eee;
+    display: inline-block;
+    font-size: var(--star-size);
+    line-height: 1;
+
+
+}
+
+.Stars:before {
+    content: '★★★★★';
+    letter-spacing: 1px;
+    background: linear-gradient(90deg, var(--star-background) var(--percent), var(--star-color) var(--percent));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+
+
+body {
+    background: #eee;
+    padding: 0;
+    margin: 0;
+}
+.stars {
+    color: gold;
+    font-size: 1.2em;
+}
+.star {
+    cursor: pointer;
+}
+.filled {
+    color: gold;
+}
+.empty {
+    color: lightgray;
+}
