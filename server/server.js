@@ -13,7 +13,7 @@ app.use(cors({
 }));
 
 let comments = [];
-let globalRating = 5;
+let globalRating = 5; // Default global rating
 let ratingCounts = { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 };
 
 // Calculate the average rating
@@ -48,16 +48,18 @@ app.get('/comments', (req, res) => {
 
 // Add a new comment
 app.post('/comments', (req, res) => {
-    const { text, rating, userId } = req.body;
+    const { text, rating = 5, userId } = req.body; // Default rating to 5 if not provided
     if (text && typeof rating === 'number' && rating >= 1 && rating <= 5 && userId) {
         const newComment = { text, rating, userId, id: uuidv4() };
-        console.log(newComment)
         comments.push(newComment);
 
         // Update rating counts
         if (ratingCounts[rating] !== undefined) {
             ratingCounts[rating]++;
         }
+
+        // Recalculate global rating
+        globalRating = calculateAverageRating();
 
         res.status(201).json({ message: 'Comment added!', comment: newComment });
     } else {
@@ -84,6 +86,9 @@ app.delete('/comments/:id', (req, res) => {
                     ratingCounts[removedComment.rating] = 0;
                 }
             }
+
+            // Recalculate global rating
+            globalRating = calculateAverageRating();
 
             res.status(200).json({ message: 'Comment deleted!' });
         } else {
