@@ -50,25 +50,27 @@ app.get('/comments', (req, res) => {
 app.post('/comments', (req, res) => {
     const { text, rating, userId } = req.body;
     if (text && typeof rating === 'number' && rating >= 1 && rating <= 5 && userId) {
-        comments.push({ text, rating, userId });
+        const newComment = { text, rating, userId, id: uuidv4() };
+        comments.push(newComment);
 
         // Update rating counts
         if (ratingCounts[rating] !== undefined) {
             ratingCounts[rating]++;
         }
 
-        res.status(201).json({ message: 'Comment added!' });
+        res.status(201).json({ message: 'Comment added!', comment: newComment });
     } else {
         res.status(400).json({ message: 'Invalid comment data' });
     }
 });
 
-// Delete a comment by index
-app.delete('/comments/:index', (req, res) => {
-    const index = parseInt(req.params.index, 10);
+// Delete a comment by ID
+app.delete('/comments/:id', (req, res) => {
+    const commentId = req.params.id;
     const { userId } = req.body;
 
-    if (!isNaN(index) && index >= 0 && index < comments.length) {
+    const index = comments.findIndex(comment => comment.id === commentId);
+    if (index !== -1) {
         const comment = comments[index];
         if (comment.userId === userId) {
             const removedComment = comments.splice(index, 1)[0];
