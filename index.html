@@ -109,7 +109,7 @@
         methods: {
             async fetchComments() {
                 try {
-                    const response = await fetch('https://scaling-funicular-rwpwjrw9q97hvwq-3000.app.github.dev/comments');
+                    const response = await fetch('http://localhost:3000/comments');
                     if (!response.ok) throw new Error('Failed to fetch comments');
                     const data = await response.json();
                     this.comments = data.comments;
@@ -125,7 +125,7 @@
                 const commentText = this.$refs.editableDiv.innerHTML.trim();
                 if (commentText) {
                     try {
-                        const response = await fetch('https://scaling-funicular-rwpwjrw9q97hvwq-3000.app.github.dev/comments', {
+                        const response = await fetch('http://localhost:3000/comments', {
                             method: 'POST',
                             headers: {
                                 'Content-Type': 'application/json'
@@ -147,7 +147,7 @@
             async deleteComment(commentId) {
                 if (confirm('Are you sure you want to delete this comment?')) {
                     try {
-                        const response = await fetch(`https://scaling-funicular-rwpwjrw9q97hvwq-3000.app.github.dev/comments/${commentId}`, {
+                        const response = await fetch(`http://localhost:3000/comments/${commentId}`, {
                             method: 'DELETE',
                             headers: {
                                 'Content-Type': 'application/json'
@@ -163,7 +163,7 @@
             },
             async saveGlobalRating() {
                 try {
-                    const response = await fetch('https://scaling-funicular-rwpwjrw9q97hvwq-3000.app.github.dev/global-rating', {
+                    const response = await fetch('http://localhost:3000/global-rating', {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json'
@@ -195,9 +195,10 @@
             selectEmoji(emoji) {
                 const editableDiv = this.$refs.editableDiv;
 
-                // Save the current selection range
+                // Create a new range and selection
                 const range = document.createRange();
                 const sel = window.getSelection();
+
                 if (sel.rangeCount > 0) {
                     range.setStart(sel.getRangeAt(0).startContainer, sel.getRangeAt(0).startOffset);
                     range.collapse(true);
@@ -208,14 +209,21 @@
                 // Insert emoji
                 const imgTag = `<img style="vertical-align: middle; width: 20px; margin: 0 2px;" src="${emoji.src}" alt="${emoji.alt}" />`;
                 range.deleteContents(); // Delete the current selection if any
-                range.insertNode(new DOMParser().parseFromString(imgTag, 'text/html').body.firstChild);
+                const emojiNode = new DOMParser().parseFromString(imgTag, 'text/html').body.firstChild;
+                range.insertNode(emojiNode);
 
-                // Restore the cursor position to the end of the inserted emoji
+                // Move the cursor to the end of the inserted emoji
+                range.setStartAfter(emojiNode);
+                range.collapse(true);
                 sel.removeAllRanges();
                 sel.addRange(range);
 
+                // Focus back on the editable div
+                editableDiv.focus();
+
                 this.showPicker = false; // Hide picker after selection
-            },
+            }
+            ,
             //  End emoji
         },
         mounted() {
