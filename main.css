@@ -29,7 +29,9 @@
     -webkit-text-fill-color: transparent;
 }
 
-
+form {
+    position: relative;
+}
 
 body {
     background: #eee;
@@ -48,4 +50,74 @@ body {
 }
 .empty {
     color: lightgray;
+}
+
+.container {
+    position: relative;
+    display: inline-block;
+    width: 100%;
+}
+
+.emoji-picker {
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin-top: 5px;
+    z-index: 1000;
+}
+
+.emoji-list {
+    display: flex;
+    flex-wrap: wrap;
+    background: #fff;
+    border: 1px solid #ccc;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    padding: 5px;
+    right: 0;
+    min-width: 200px;
+    position: absolute;
+}
+
+.emoji-item {
+    font-size: 24px;
+    width: 30px;
+    height: 30px;
+    margin: 4px;
+    padding: 4px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.emoji-item img {
+    width: 30px;
+    height: 30px;
+}
+
+.emoji-item:hover {
+    background-color: #f0f0f0;
+}
+
+.editable-div {
+    width: 100%;
+    min-height: 150px;
+    padding: 10px;
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    overflow-y: auto;
+    white-space: pre-wrap;
+}
+
+.close-button {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    background: none;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+.close-button:hover {
+    color: red;
 }
