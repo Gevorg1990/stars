@@ -92,6 +92,32 @@ body {
     width: 30px;
     height: 30px;
 }
+.comment__date,
+.comment__text{
+    display: block;
+}
+
+span:first-child {
+    margin-bottom: 40px;
+}
+.comment__item {
+    min-height: 60px;
+    border: 1px solid red;
+    display: flex;
+    align-items: flex-start;
+    box-sizing: border-box;
+    padding: 20px;
+    justify-content: space-between;
+    gap: 60px;
+}
+
+.comment__item:not(:last-of-type) {
+    margin-bottom: 15px;
+}
+
+.editable-div:empty:before {
+    content: attr(data-placeholder);
+}
 
 .emoji-item:hover {
     background-color: #f0f0f0;
@@ -120,4 +146,34 @@ body {
 
 .close-button:hover {
     color: red;
+}
+
+/*AVATAR*/
+/* Avatar Picker Styles */
+.avatar-picker {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background-color: #fff;
+    border: 1px solid #888;
+    padding: 10px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    z-index: 2;
+}
+
+.avatar-item {
+    cursor: pointer;
+}
+
+.avatar-item:hover .avatar-preview {
+    border: 2px solid #000;
+}
+
+.avatar-preview {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 1px solid #ddd;
 }

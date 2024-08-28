@@ -3,16 +3,15 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const { v4: uuidv4 } = require('uuid');
 const fs = require('fs');
+const multer = require('multer');
 const path = require('path');
 
 const app = express();
 app.use(bodyParser.json());
-
-app.use(cors({
-    origin: '*', // Allow all origins for local development
-}));
+app.use(cors({ origin: '*' }));
 
 const commentsFilePath = path.join(__dirname, 'comments.json');
+const uploadsDir = path.join(__dirname, '..', 'uploads');
 
 // Load comments from file
 let comments = [];
@@ -21,7 +20,7 @@ if (fs.existsSync(commentsFilePath)) {
     comments = JSON.parse(commentsData);
 }
 
-let globalRating = 5; // Default global rating
+let globalRating = 5;
 let ratingCounts = { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 };
 
 // Calculate the average rating
@@ -49,6 +48,24 @@ function saveCommentsToFile() {
     fs.writeFileSync(commentsFilePath, JSON.stringify(comments, null, 2));
 }
 
+// Ensure uploads directory exists
+if (!fs.existsSync(uploadsDir)) {
+    fs.mkdirSync(uploadsDir);
+}
+
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, uploadsDir);
+    },
+    filename: (req, file, cb) => {
+        cb(null, Date.now() + path.extname(file.originalname));
+    }
+});
+const upload = multer({ storage });
+
+// Serve static files from the "uploads" directory
+app.use('/uploads', express.static(uploadsDir));
+
 // Get all comments, global rating, and average rating
 app.get('/comments', (req, res) => {
     res.json({
@@ -59,26 +76,42 @@ app.get('/comments', (req, res) => {
     });
 });
 
-// Add a new comment
-app.post('/comments', (req, res) => {
-    const { text, rating = 5, userId } = req.body; // Default rating to 5 if not provided
-    if (text && typeof rating === 'number' && rating >= 1 && rating <= 5 && userId) {
-        const newComment = { text, rating, userId, id: uuidv4() };
-        comments.push(newComment);
+// Handle POST requests to /comments
+app.post('/comments', upload.single('avatar'), (req, res) => {
 
-        // Update rating counts
-        if (ratingCounts[rating] !== undefined) {
-            ratingCounts[rating]++;
+    try {
+        const { text, rating, userId, name } = req.body;
+        const avatarUrl = req.file ? `/uploads/${req.file.filename}` : req.body.avatar;
+
+        const numericRating = Number(rating);
+
+        if (text && !isNaN(numericRating) && numericRating >= 1 && numericRating <= 5 && userId) {
+            const newComment = {
+                text,
+                rating: numericRating,
+                userId,
+                name,
+                avatar: avatarUrl,
+                id: uuidv4(),
+                date: new Date().toISOString()
+            };
+            comments.push(newComment);
+
+            if (ratingCounts[newComment.rating] !== undefined) {
+                ratingCounts[newComment.rating]++;
+            }
+
+            globalRating = parseFloat(calculateAverageRating());
+
+            saveCommentsToFile();
+
+            res.status(201).json({ message: 'Comment added!', comment: newComment });
+        } else {
+            res.status(400).json({ message: 'Invalid comment data', data: req.body });
         }
-
-        // Recalculate global rating
-        globalRating = 5;
-
-        saveCommentsToFile();
-
-        res.status(201).json({ message: 'Comment added!', comment: newComment });
-    } else {
-        res.status(400).json({ message: 'Invalid comment data' });
+    } catch (error) {
+        console.error('Error adding comment:', error);
+        res.status(500).json({ message: 'Internal Server Error' });
     }
 });
 
@@ -102,7 +135,7 @@ app.delete('/comments/:id', (req, res) => {
             }
 
             // Recalculate global rating
-            globalRating = 5;
+            globalRating = parseFloat(calculateAverageRating());
 
             saveCommentsToFile();
 
